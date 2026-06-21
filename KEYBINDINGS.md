@@ -210,7 +210,7 @@
 
 | Key | Mod | Açıklama |
 |-----|-----|----------|
-| `<C-/>` | n/t | Floaterm aç/kapat |
+| `<F12>` | n/t | Floaterm aç/kapat |
 | `<Leader>tF` | n | Floaterm aç/kapat (alternatif) |
 | `<Leader>td` | n | LazyDocker terminali |
 | `<Leader>ts` | n | Toggleterm yöneticisini aç (Telescope) |

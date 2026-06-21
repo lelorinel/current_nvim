@@ -77,8 +77,14 @@ return {
         -- Markdown Preview toggle — <Leader>Mt overseer'da, büyük T kullan
         ["<Leader>MT"] = { "<cmd>MarkdownPreviewToggle<cr>", desc = "Toggle markdown preview" },
 
-        -- Floaterm toggle (Ctrl+/ terminalde <C-_> olarak gelir)
-        ["<C-_>"] = { "<cmd>FloatermToggle<cr>", desc = "Toggle Floaterm" },
+        -- Floaterm toggle
+        ["<F12>"] = { "<cmd>FloatermToggle<cr>", desc = "Toggle Floaterm" },
+
+        -- Manuel kaydetme
+        ["<C-s>"] = { "<cmd>w<cr>", desc = "Save file" },
+      },
+      i = {
+        ["<C-s>"] = { "<Esc><cmd>w<cr>", desc = "Save file" },
       },
       v = {
         -- lspsaga öncelikli
@@ -92,7 +98,7 @@ return {
       },
       t = {
         -- Floaterm içindeyken de kapat
-        ["<C-_>"] = { "<cmd>FloatermToggle<cr>", desc = "Toggle Floaterm" },
+        ["<F12>"] = { "<cmd>FloatermToggle<cr>", desc = "Toggle Floaterm" },
         -- Terminal insert modundan çık (normal moda geç)
         ["<Esc>"] = { "<C-\\><C-n>", desc = "Exit terminal mode" },
       },

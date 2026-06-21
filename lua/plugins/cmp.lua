@@ -1,45 +1,7 @@
 return {
   "hrsh7th/nvim-cmp",
-  dependencies = { "onsails/lspkind.nvim" },
   opts = function(_, opts)
     local cmp = require "cmp"
-    local lspkind = require "lspkind"
-
-    opts.formatting = {
-      format = lspkind.cmp_format {
-        mode = "symbol_text",
-        maxwidth = 50,
-        ellipsis_char = "...",
-        symbol_map = {
-          Text = "󰉿",
-          Method = "󰆧",
-          Function = "󰊕",
-          Constructor = "",
-          Field = "󰜢",
-          Variable = "󰀫",
-          Class = "󰠱",
-          Interface = "",
-          Module = "",
-          Property = "󰜢",
-          Unit = "󰑭",
-          Value = "󰎠",
-          Enum = "",
-          Keyword = "󰌋",
-          Snippet = "",
-          Color = "󰏘",
-          File = "󰈙",
-          Reference = "󰈇",
-          Folder = "󰉋",
-          EnumMember = "",
-          Constant = "󰏿",
-          Struct = "󰙅",
-          Event = "",
-          Operator = "󰆕",
-          TypeParameter = "",
-          Copilot = "",
-        },
-      },
-    }
 
     opts.window = {
       completion = cmp.config.window.bordered {

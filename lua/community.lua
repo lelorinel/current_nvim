@@ -71,7 +71,7 @@ return {
   { import = "astrocommunity.colorscheme.zenbones" },
   { import = "astrocommunity.comment.mini-comment" },
   { import = "astrocommunity.docker.lazydocker" },
-  { import = "astrocommunity.editing-support.auto-save-nvim" },
+  -- { import = "astrocommunity.editing-support.auto-save-nvim" },
   { import = "astrocommunity.editing-support.bigfile-nvim" },
   -- { import = "astrocommunity.editing-support.nvim-context-vt" },
   { import = "astrocommunity.editing-support.nvim-devdocs" },
