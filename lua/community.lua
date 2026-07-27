@@ -8,13 +8,14 @@
 return {
   "AstroNvim/astrocommunity",
   { import = "astrocommunity.pack.lua" },
-  { import = "astrocommunity.completion.nvim-cmp" },
+  { import = "astrocommunity.completion.blink-cmp" },
   -- import/override with your plugins folder
-  { import = "astrocommunity.ai.minuet-ai-nvim" },
+  -- { import = "astrocommunity.ai.minuet-ai-nvim" }, -- disabled: local Ollama completion
   { import = "astrocommunity.bars-and-lines.dropbar-nvim" },
   { import = "astrocommunity.bars-and-lines.vim-illuminate" },
   { import = "astrocommunity.code-runner.overseer-nvim" },
-  { import = "astrocommunity.color.huez-nvim" },
+  -- huez: lazy override in plugins/colorscheme-persist.lua
+  -- { import = "astrocommunity.color.huez-nvim" },
   { import = "astrocommunity.color.transparent-nvim" },
   { import = "astrocommunity.color.vim-highlighter" },
   { import = "astrocommunity.colorscheme.alabaster" },

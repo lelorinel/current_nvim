@@ -23,9 +23,21 @@ return {
         signcolumn = "yes",
         wrap = false,
       },
+      g = {
+        -- vim-workspace otherwise autosaves on InsertLeave/BufLeave/FocusLost,
+        -- which triggers AstroLSP format_on_save on every mode change.
+        workspace_autosave = false,
+      },
     },
     mappings = {
       n = {
+        ["<Esc>"] = {
+          function()
+            vim.cmd.nohlsearch()
+            pcall(function() require("hlslens").stop() end)
+          end,
+          desc = "Clear search highlight",
+        },
         ["<Leader><Leader>"] = { "<cmd>Telescope find_files<cr>", desc = "Find files" },
         ["<S-h>"] = { function() require("astrocore.buffer").nav(-vim.v.count1) end, desc = "Previous buffer" },
         ["<S-l>"] = { function() require("astrocore.buffer").nav(vim.v.count1) end, desc = "Next buffer" },
@@ -39,7 +51,10 @@ return {
           function()
             local current = vim.api.nvim_get_current_buf()
             for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
-              if bufnr ~= current then require("astrocore.buffer").close(bufnr) end
+              if bufnr ~= current then
+                local buftype = vim.api.nvim_get_option_value("buftype", { buf = bufnr })
+                if buftype == "" then require("astrocore.buffer").close(bufnr) end
+              end
             end
           end,
           desc = "Close all other buffers",
