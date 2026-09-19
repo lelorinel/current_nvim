@@ -78,16 +78,50 @@ return {
       max_typos = 0,
       frecency = { enabled = true },
       use_proximity = true,
-      sorts = { "exact", "score", "sort_text" },
+      sorts = {
+        -- emmet_ls HER kelimeye `<kelime></kelime>` üretir; menüde `~` ile görünür.
+        -- "exact" sıralaması skora bakmaz (boolean karşılaştırır), o yüzden `acc`
+        -- yazınca emmet exact-eşleşmeyle `access?` gibi gerçek LSP sonucunun önüne
+        -- geçip <CR>'ı gasp ediyordu. score_offset ile çözülmez, o yüzden emmet'i
+        -- sıralamada en alta it: normal sonuçlar üstte, emmet yine listede dursun.
+        function(a, b)
+          local function is_emmet(item)
+            return item.client_name == "emmet_ls" or item.client_name == "emmet_language_server"
+          end
+          local ae, be = is_emmet(a), is_emmet(b)
+          if ae ~= be then return be end
+        end,
+        "exact",
+        "score",
+        "sort_text",
+      },
     })
 
     opts.sources = vim.tbl_deep_extend("force", opts.sources or {}, {
       -- Don't open the menu on a single letter / empty keyword spam.
       min_keyword_length = 1,
       default = { "lsp", "path", "snippets", "buffer" },
+      -- OpenCode "Ask" penceresinde LSP + buffer tamamlaması (opencode.nvim)
+      per_filetype = { opencode_ask = { "lsp", "buffer" } },
       providers = {
         -- Give LSP time to resolve detail/docs (examples, signatures).
-        lsp = { async = true, timeout_ms = 2000, max_items = 100 },
+        lsp = {
+          async = true,
+          timeout_ms = 2000,
+          max_items = 100,
+          -- `{` gibi prefix'siz tetiklenmede LSP'den gelen snippet-kind ıvır
+          -- zıvır (örn. emmet'in `{}` üretimi) menüde tek başına kalıp <CR>'ı
+          -- gasp etmesin: keyword yoksa snippet-kind LSP item'larını ele.
+          transform_items = function(ctx, items)
+            local kw = ""
+            if ctx and ctx.get_keyword then kw = ctx:get_keyword() or "" end
+            if kw == "" then
+              local snippet_kind = vim.lsp.protocol.CompletionItemKind.Snippet
+              return vim.tbl_filter(function(item) return item.kind ~= snippet_kind end, items)
+            end
+            return items
+          end,
+        },
         -- Buffer is the usual source of "random word" fuzzy hits.
         buffer = {
           score_offset = -5,
@@ -122,8 +156,8 @@ return {
         },
       }),
       menu = vim.tbl_deep_extend("force", opts.completion and opts.completion.menu or {}, {
-        -- Eski completion plugin'lerindeki sade popup görünümü.
-        border = "none",
+        -- Rounded kenarlıklı, sade menü (doc/signature pencereleriyle uyumlu).
+        border = "rounded",
         max_height = 14,
         auto_show_delay_ms = 0,
         direction_priority = { "s", "n" },
@@ -133,11 +167,12 @@ return {
           treesitter = { "lsp" },
           padding = { 0, 1 },
           gap = 1,
-          -- label | kind | LSP detail (örn. Field / u8)
+          -- label | kind | LSP detail (örn. Field / u8) | kaynak (lsp/snip/buf)
           columns = {
             { "label" },
             { "kind", gap = 1 },
             { "label_description", gap = 1 },
+            { "source_name", gap = 1 },
           },
           components = {
             kind_icon = {

@@ -13,7 +13,7 @@ return {
     formatting = {
       -- control auto formatting on save
       format_on_save = {
-        enabled = true, -- enable or disable format on save globally
+        enabled = false, -- conform.nvim (plugins/conform.lua) üzerinden formatlıyoruz
         allow_filetypes = { -- enable format on save for specified filetypes only
           -- "go",
         },
@@ -38,6 +38,56 @@ return {
     -- client specific configuration can also go in `lsp/` in your configuration root (see `:h lsp-config`)
     config = {
       -- ["*"] = { capabilities = {} }, -- modify default LSP client settings such as capabilities
+      tailwindcss = {
+        -- fivem-next monorepo: plugin UI'ları apps/gateway/src/plugins/*/nui|server
+        -- altında ama tailwind v4 projesi (index.css + @source) apps/nui'da.
+        -- Varsayılan root detection bu dosyaları repo köküne (.git) bağlıyor,
+        -- server orada tailwind projesi bulamayıp susuyor → `bg-red-` önerisi yok.
+        -- Bu dosyaları apps/nui projesine bağla.
+        root_dir = function(bufnr, on_dir)
+          local fname = vim.api.nvim_buf_get_name(bufnr)
+          if fname ~= "" then
+            local repo = fname:match("^(.-)/apps/gateway/src/plugins/[^/]+/nui/")
+              or fname:match("^(.-)/apps/gateway/src/plugins/[^/]+/server/")
+            if repo then
+              local nui_root = repo .. "/apps/nui"
+              if vim.fn.isdirectory(nui_root) == 1 then
+                on_dir(nui_root)
+                return
+              end
+            end
+          end
+          -- Diğer dosyalar: lspconfig varsayılan tailwind root detection.
+          -- (package.json sadece tailwindcss bağımlılığı varsa marker sayılır)
+          local markers = {
+            "tailwind.config.js",
+            "tailwind.config.cjs",
+            "tailwind.config.mjs",
+            "tailwind.config.ts",
+            "postcss.config.js",
+            "postcss.config.cjs",
+            "postcss.config.mjs",
+            "postcss.config.ts",
+            "package.json",
+            ".git",
+          }
+          local results = vim.fs.find(markers, { path = fname, upward = true, limit = math.huge })
+          for _, p in ipairs(results) do
+            if vim.fs.basename(p) ~= "package.json" then
+              on_dir(vim.fs.dirname(p))
+              return
+            end
+            local ok, lines = pcall(vim.fn.readfile, p)
+            if ok then
+              local text = table.concat(lines, "\n")
+              if text:find('"tailwindcss"%s*:') or text:find('"@tailwindcss/[^"]*"%s*:') then
+                on_dir(vim.fs.dirname(p))
+                return
+              end
+            end
+          end
+        end,
+      },
     },
     -- customize how language servers are attached
     handlers = {},

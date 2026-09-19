@@ -20,7 +20,7 @@ return {
   { import = "astrocommunity.color.vim-highlighter" },
   { import = "astrocommunity.colorscheme.alabaster" },
   { import = "astrocommunity.colorscheme.aurora" },
-  { import = "astrocommunity.colorscheme.bamboo-nvim" },
+  -- { import = "astrocommunity.colorscheme.bamboo-nvim" }, -- disabled: light/multiplex/vulgaris varyantları bozuk
   { import = "astrocommunity.colorscheme.bluloco-nvim" },
   { import = "astrocommunity.colorscheme.catppuccin" },
   { import = "astrocommunity.colorscheme.citruszest-nvim" },
@@ -57,7 +57,7 @@ return {
   { import = "astrocommunity.colorscheme.nvim-juliana" },
   { import = "astrocommunity.colorscheme.oldworld-nvim" },
   { import = "astrocommunity.colorscheme.onedarkpro-nvim" },
-  { import = "astrocommunity.colorscheme.oxocarbon-nvim" },
+  -- { import = "astrocommunity.colorscheme.oxocarbon-nvim" },
   { import = "astrocommunity.colorscheme.palenight-nvim" },
   { import = "astrocommunity.colorscheme.poimandres-nvim" },
   { import = "astrocommunity.colorscheme.rose-pine" },
@@ -103,13 +103,13 @@ return {
   -- { import = "astrocommunity.lsp.lsp-lens-nvim" },
   -- { import = "astrocommunity.lsp.lsp-signature-nvim" },
   { import = "astrocommunity.lsp.lspsaga-nvim" },
-  { import = "astrocommunity.markdown-and-latex.markdown-preview-nvim" },
   { import = "astrocommunity.markdown-and-latex.render-markdown-nvim" },
   { import = "astrocommunity.motion.flash-nvim" },
   { import = "astrocommunity.motion.nvim-surround" },
 
-  -- Packs 
+  -- Packs
   { import = "astrocommunity.pack.docker" },
+  { import = "astrocommunity.pack.eslint" },
   { import = "astrocommunity.pack.fish" },
   { import = "astrocommunity.pack.go" },
   { import = "astrocommunity.pack.html-css" },
